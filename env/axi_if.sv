@@ -26,7 +26,7 @@ interface axi_if #(
   // 写数据通道 (W)
   // ----------------------------
   logic [DATA_WIDTH-1:0]    wdata;
-  logic [DATA_WIDTH/8-1:0]  wstrb;
+  logic [STRB_WIDTH-1:0]    wstrb;
   logic                     wlast;
   logic                     wvalid;
   logic                     wready;
@@ -113,6 +113,31 @@ interface axi_if #(
   modport TB (
     clocking cb
   );
+	
+	clocking mon @(posedge clk);
+		default input #1step output #1step;
+
+    input  awid, awaddr, awlen, awsize, awburst, awvalid;
+    input  awready;
+
+    input  wdata, wstrb, wlast, wvalid;
+    input  wready;
+
+    input  bid, bresp, bvalid;
+    input  bready;
+
+    input  arid, araddr, arlen, arsize, arburst, arvalid;
+    input  arready;
+
+    input  rid, rdata, rresp, rlast, rvalid;
+    input  rready;
+
+	endclocking
+	
+
+	modport MON (
+		clocking mon
+		);
 
 endinterface
 

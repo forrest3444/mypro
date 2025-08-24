@@ -11,7 +11,7 @@ class axi_monitor extends uvm_monitor;
 
 	`uvm_component_utils(axi_monitor);
   // virtual interface
-  virtual axi_if.TB vif;
+  virtual axi_if.MON vif;
 
   // Analysis port (把 transaction 往外送)
   uvm_analysis_port #(axi_sequence_item) ap;
@@ -25,7 +25,7 @@ class axi_monitor extends uvm_monitor;
   // Build phase
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    if (!uvm_config_db#(virtual axi_if.TB)::get(this, "", "vif", vif)) begin
+    if (!uvm_config_db#(virtual axi_if.MON)::get(this, "", "vif", vif)) begin
       `uvm_fatal("NOVIF", "No virtual interface provided for axi_monitor")
     end
   endfunction
@@ -47,17 +47,17 @@ class axi_monitor extends uvm_monitor;
     axi_sequence_item tr;
 
     // 等待写地址
-    @(posedge vif.clk iff (vif.awvalid && vif.awready));
+    @(vif.mon iff (vif.mon.awvalid && vif.mon.awready));
     tr = axi_sequence_item::type_id::create("tr", this);
-    tr.addr = vif.awaddr;
+    tr.addr = vif.mon.awaddr;
     tr.cmd  = axi_sequence_item::WRITE;
 
     // 等待写数据
-    @(posedge vif.clk iff (vif.wvalid && vif.wready));
-    tr.data = vif.wdata;
+    @(vif.mon iff (vif.mon.wvalid && vif.mon.wready));
+    tr.data = vif.mon.wdata;
 
     // 等待写响应
-    @(posedge vif.clk iff (vif.bvalid && vif.bready));
+    @(posedge vif.mon iff (vif.mon.bvalid && vif.mon.bready));
 
     `uvm_info("MON", $sformatf("Monitor captured WRITE: %s", tr.convert2string()), UVM_MEDIUM);
     ap.write(tr);
@@ -70,14 +70,14 @@ class axi_monitor extends uvm_monitor;
     axi_sequence_item tr;
 
     // 等待读地址
-    @(posedge vif.clk iff (vif.arvalid && vif.arready));
+    @(posedge vif.mon iff (vif.mon.arvalid && vif.mon.arready));
     tr = axi_sequence_item::type_id::create("tr", this);
-    tr.addr = vif.araddr;
+    tr.addr = vif.mon.araddr;
     tr.cmd  = axi_sequence_item::READ;
 
     // 等待读数据
-    @(posedge vif.clk iff (vif.rvalid && vif.rready));
-    tr.data = vif.rdata;
+    @(posedge vif.mon iff (vif.mon.rvalid && vif.mon.rready));
+    tr.data = vif.mon.rdata;
 
     `uvm_info("MON", $sformatf("Monitor captured READ : %s", tr.convert2string()), UVM_MEDIUM);
     ap.write(tr);

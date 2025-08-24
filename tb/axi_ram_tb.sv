@@ -29,10 +29,9 @@ axi_if #(
 );
 
 axi_ram #(
-	.ADDR_WIDTH(32),
+	.ADDR_WIDTH(16),
 	.DATA_WIDTH(32),
-	.ID_WIDTH(4),
-	.MEM_SIZE(1024)
+	.ID_WIDTH(4)
 ) dut (
 	.clk (clk),
 	.rst (~rst_n),

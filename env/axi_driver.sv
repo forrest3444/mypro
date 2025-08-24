@@ -55,7 +55,7 @@ class axi_driver extends uvm_driver #(axi_sequence_item);
     vif.cb.awlen   <= 0;       // single beat
     vif.cb.awsize  <= 3'b010;  // 4 bytes
     vif.cb.awburst <= 2'b01;   // INCR
-    wait (vif.awready);
+    wait (vif.cb.awready);
     @(vif.cb);
     vif.cb.awvalid <= 0;
 
@@ -64,12 +64,12 @@ class axi_driver extends uvm_driver #(axi_sequence_item);
     vif.cb.wstrb   <= '1;
     vif.cb.wlast   <= 1;
     vif.cb.wvalid  <= 1;
-    wait (vif.wready);
+    wait (vif.cb.wready);
     @(vif.cb);
     vif.cb.wvalid  <= 0;
 
     // B channel
-    wait (vif.bvalid);
+    wait (vif.cb.bvalid);
     @(vif.cb);
     vif.cb.bready  <= 1;
     @(vif.cb);
@@ -90,12 +90,12 @@ class axi_driver extends uvm_driver #(axi_sequence_item);
     vif.cb.arlen   <= 0;
     vif.cb.arsize  <= 3'b010;   // 4 bytes
     vif.cb.arburst <= 2'b01;
-    wait (vif.arready);
+    wait (vif.cb.arready);
     @(vif.cb);
     vif.cb.arvalid <= 0;
 
     // R channel
-    wait (vif.rvalid);
+    wait (vif.cb.rvalid);
     @(vif.cb);
     vif.cb.rready  <= 1;
     `uvm_info("DRV", $sformatf("READ complete: data=0x%08h", vif.cb.rdata), UVM_MEDIUM);

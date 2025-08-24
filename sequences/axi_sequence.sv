@@ -14,7 +14,7 @@ class axi_sequence extends uvm_sequence #(axi_sequence_item);
 
     // 写操作
     tr = axi_sequence_item::type_id::create("tr_write");
-    tr.op   = axi_sequence_item::WRITE;
+    tr.cmd  = axi_sequence_item::WRITE;
     tr.addr = 32'h0000_1000;
     tr.data = 32'hDEAD_BEEF;
     start_item(tr);
@@ -22,7 +22,7 @@ class axi_sequence extends uvm_sequence #(axi_sequence_item);
 
     // 读操作
     tr = axi_sequence_item::type_id::create("tr_read");
-    tr.op   = axi_sequence_item::READ;
+    tr.cmd  = axi_sequence_item::READ;
     tr.addr = 32'h0000_1000;
     tr.data = 'hX; // 读操作 data 可以不用填
     start_item(tr);

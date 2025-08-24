@@ -11,7 +11,7 @@ class axi_reference extends uvm_component;
 
 	`uvm_component_utils(axi_reference);
   // 输入：从 monitor 接收 DUT 事务
-  uvm_analysis_imp #(axi_sequence_item, axi_reference_model) imp;
+  uvm_analysis_imp #(axi_sequence_item, axi_reference) imp;
 
   // 输出：发送期望事务给 scoreboard
   uvm_analysis_port #(axi_sequence_item) ap;

@@ -47,7 +47,7 @@ class axi_env extends uvm_env;
     agt_i.monitor.ap.connect(refm.imp);
 
     // 同时把 Monitor 的“实际读事务”广播给 Scoreboard 的 actual 端口
-    agent_o.monitor.ap.connect(scb.act_imp);
+    agt_o.monitor.ap.connect(scb.act_imp);
 
     // Reference Model 把“期望读事务”送到 Scoreboard 的 expected 端口
     refm.ap.connect(scb.exp_imp);

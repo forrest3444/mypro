@@ -16,7 +16,7 @@ class smoke_test extends base_test;
       phase.raise_objection(this);
 
       seq = axi_sequence::type_id::create("seq");
-      seq.start(env.agent_i.sequencer);
+      seq.start(env.agt_i.sequencer);
 
       phase.drop_objection(this);
    endtask
